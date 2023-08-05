@@ -5,7 +5,10 @@ let is_bool = (val) => val === true || val === false;
 export function create_node(tag, ...args) {
   let node = document.createElement(tag);
   for (let arg of args) {
-    if (arg.nodeType) node.append(arg);
+    let type = typeof arg
+    if (type === "string" || type === "number") text(arg)(node)
+    else if (arg.nodeType) node.append(arg);
+    else if (type === "object") attrs(arg)(node)
     else arg(node)
   }
 
