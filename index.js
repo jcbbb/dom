@@ -2,9 +2,13 @@ import { effect } from "state";
 
 let is_bool = (val) => val === true || val === false;
 
-export function create_node(tag, modifiers = []) {
+export function create_node(tag, ...args) {
   let node = document.createElement(tag);
-  for (let mod of modifiers) mod(node);
+  for (let arg of args) {
+    if (arg.nodeType) node.append(arg);
+    else arg(node)
+  }
+
   return node;
 }
 
@@ -69,14 +73,14 @@ export function html(str) {
 export let fragment = (...fns) => create_fragment(fns);
 export let svg = (...fns) => create_svg_ns(fns);
 export let path = (...fns) => create_path_ns(fns);
-export let span = (...fns) => create_node("span", fns);
-export let div = (...fns) => create_node("div", fns);
-export let ul = (...fns) => create_node("ul", fns);
-export let li = (...fns) => create_node("li", fns);
-export let p = (...fns) => create_node("p", fns);
-export let img = (...fns) => create_node("img", fns);
-export let h2 = (...fns) => create_node("h2", fns);
-export let a = (...fns) => create_node("a", fns);
-export let button = (...fns) => create_node("button", fns);
-export let input = (...fns) => create_node("input", fns);
-export let label = (...fns) => create_node("label", fns);
+export let span = (...args) => create_node("span", ...args);
+export let div = (...args) => create_node("div", ...args);
+export let ul = (...args) => create_node("ul", ...args);
+export let li = (...args) => create_node("li", ...args);
+export let p = (...args) => create_node("p", ...args);
+export let img = (...args) => create_node("img", ...args);
+export let h2 = (...args) => create_node("h2", ...args);
+export let a = (...args) => create_node("a", ...args);
+export let button = (...args) => create_node("button", ...args);
+export let input = (...args) => create_node("input", ...args);
+export let label = (...args) => create_node("label", ...args);
