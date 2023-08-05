@@ -8,6 +8,6 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "git": "link:github.com:jcbbb/state.git"
+    "state": "github:jcbbb/state"
   }
 }
