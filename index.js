@@ -35,6 +35,12 @@ export function text(content, modfn) {
   }
 }
 
+export function classes(list = []) {
+  return (node) => {
+    node.className = list.filter(Boolean).join(" ");
+  }
+}
+
 export function create_svg_ns(modifiers = []) {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   for (const mod of modifiers) mod(svg);
