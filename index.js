@@ -7,14 +7,14 @@ export function create_node(tag, ...args) {
   for (let arg of args) {
     // skip falsey
     if (arg !== 0 && !arg) {
-      continue
+      continue;
     }
 
-    let type = typeof arg
-    if (type === "string" || type === "number") text(arg)(node)
+    let type = typeof arg;
+    if (type === "string" || type === "number") text(arg)(node);
     else if (arg.nodeType) node.append(arg);
-    else if (type === "object") attrs(arg)(node)
-    else arg(node)
+    else if (type === "object") attrs(arg)(node);
+    else arg(node);
   }
 
   return node;
@@ -30,20 +30,20 @@ export function text(content, modfn) {
   return (node) => {
     if (typeof content === "function") {
       effect(() => {
-        node.textContent = content(modfn)
-      })
+        node.textContent = content(modfn);
+      });
     } else {
-      node.textContent = content
+      node.textContent = content;
     }
 
     return node;
-  }
+  };
 }
 
 export function classes(list = []) {
   return (node) => {
     node.className = list.filter(Boolean).join(" ");
-  }
+  };
 }
 
 export function create_svg_ns(modifiers = []) {
@@ -68,13 +68,13 @@ export function attrs(attrs) {
         effect(() => {
           let val = value();
           if (is_bool(val)) node.toggleAttribute(key, val, val);
-          else node.setAttribute(key, val)
+          else node.setAttribute(key, val);
         });
-      } else node.setAttribute(key, value)
+      } else node.setAttribute(key, value);
     }
 
     return node;
-  }
+  };
 }
 
 export function html(str) {
@@ -98,3 +98,4 @@ export let a = (...args) => create_node("a", ...args);
 export let button = (...args) => create_node("button", ...args);
 export let input = (...args) => create_node("input", ...args);
 export let label = (...args) => create_node("label", ...args);
+export let form = (...args) => create_node("form", ...args);
