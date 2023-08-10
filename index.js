@@ -84,6 +84,24 @@ export function html(str) {
   };
 }
 
+export function listeners(listeners) {
+  return (node) => {
+    for (let event in listeners) {
+      node.addEventListener(event, listeners[event]);
+    }
+  };
+}
+
+export function value(content) {
+  return (node) => {
+    if (typeof content === "function") {
+      effect(() => {
+        node.value = content();
+      });
+    } else node.value = content;
+  };
+}
+
 export let fragment = (...fns) => create_fragment(fns);
 export let svg = (...fns) => create_svg_ns(fns);
 export let path = (...fns) => create_path_ns(fns);
