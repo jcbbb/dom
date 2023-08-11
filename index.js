@@ -114,18 +114,20 @@ export function value(content) {
   };
 }
 
-let condition = (cond, truthy, falsey) => (parent, pos) => {
-  effect(() => {
-    if (cond()) {
-      if (falsey) falsey.remove();
-      return parent.insertBefore(truthy, parent.children[pos - 1]);
-    } else if (falsey) {
-      return parent.insertBefore(falsey, parent.children[pos - 1]);
-    }
-  });
+export function condition(cond, truthy, falsey) {
+  return (parent, pos) => {
+    effect(() => {
+      if (cond()) {
+        if (falsey) falsey.remove();
+        return parent.insertBefore(truthy, parent.children[pos - 1]);
+      } else if (falsey) {
+        return parent.insertBefore(falsey, parent.children[pos - 1]);
+      }
+    });
 
-  return falsey;
-};
+    return falsey;
+  };
+}
 
 export let fragment = (...args) => create_fragment(...args);
 export let svg = (...fns) => create_svg_ns(fns);
