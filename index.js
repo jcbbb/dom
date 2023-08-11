@@ -2,9 +2,11 @@ import { effect } from "state";
 
 let is_bool = (val) => val === true || val === false;
 
+// TODO: do something abuot duplication in create_node and create_fragment;
 export function create_node(tag, ...args) {
   let node = document.createElement(tag);
-  for (let arg of args) {
+  for (let i = 0; i < args.length; i++) {
+    let arg = args[i];
     // skip falsey
     if (arg !== 0 && !arg) {
       continue;
@@ -14,15 +16,25 @@ export function create_node(tag, ...args) {
     if (type === "string" || type === "number") text(arg)(node);
     else if (arg.nodeType) node.append(arg);
     else if (type === "object") attrs(arg)(node);
-    else arg(node);
+    else arg(node, i);
   }
 
   return node;
 }
 
-export function create_fragment(modifiers = []) {
-  const fragment = new DocumentFragment();
-  for (const mod of modifiers) mod(fragment);
+export function create_fragment(...args) {
+  let fragment = new DocumentFragment();
+
+  for (let i = 0; i < args.length; i++) {
+      let arg = args[i];
+      if (arg != 0 && !arg) continue;
+      let type = typeof arg;
+      if (type === "string" || type === "number") text(arg)(fragment);
+      else if (arg.nodeType) fragment.append(arg);
+      else if (type === "object") attrs(arg)(fragment);
+      else arg(fragment, i);
+    }
+
   return fragment;
 }
 
@@ -47,15 +59,15 @@ export function classes(list = []) {
 }
 
 export function create_svg_ns(modifiers = []) {
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  for (const mod of modifiers) mod(svg);
+  let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  for (let mod of modifiers) mod(svg);
 
   return svg;
 }
 
 export function create_path_ns(modifiers = []) {
-  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  for (const mod of modifiers) mod(path);
+  let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  for (let mod of modifiers) mod(path);
 
   return path;
 }
@@ -102,7 +114,20 @@ export function value(content) {
   };
 }
 
-export let fragment = (...fns) => create_fragment(fns);
+let condition = (cond, truthy, falsey) => (parent, pos) => {
+  effect(() => {
+    if (cond()) {
+      if (falsey) falsey.remove();
+      return parent.insertBefore(truthy, parent.children[pos - 1]);
+    } else if (falsey) {
+      return parent.insertBefore(falsey, parent.children[pos - 1]);
+    }
+  });
+
+  return falsey;
+};
+
+export let fragment = (...args) => create_fragment(...args);
 export let svg = (...fns) => create_svg_ns(fns);
 export let path = (...fns) => create_path_ns(fns);
 export let span = (...args) => create_node("span", ...args);
