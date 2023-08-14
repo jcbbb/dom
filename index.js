@@ -3,8 +3,7 @@ import { effect } from "state";
 let is_bool = (val) => val === true || val === false;
 
 // TODO: do something abuot duplication in create_node and create_fragment;
-export function create_node(tag, ...args) {
-  let node = document.createElement(tag);
+export function node_args(node, ...args) {
   for (let i = 0; i < args.length; i++) {
     let arg = args[i];
     // skip falsey
@@ -22,20 +21,24 @@ export function create_node(tag, ...args) {
   return node;
 }
 
+export function create_node(tag, ...args) {
+  let node = document.createElement(tag);
+  return node_args(node, ...args);
+}
+
+export function create_svg_ns(...args) {
+  let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  return node_args(svg, ...args)
+}
+
+export function create_path_ns(...args) {
+  let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  return node_args(path, ...args)
+}
+
 export function create_fragment(...args) {
-  let fragment = new DocumentFragment();
-
-  for (let i = 0; i < args.length; i++) {
-      let arg = args[i];
-      if (arg != 0 && !arg) continue;
-      let type = typeof arg;
-      if (type === "string" || type === "number") text(arg)(fragment);
-      else if (arg.nodeType) fragment.append(arg);
-      else if (type === "object") attrs(arg)(fragment);
-      else arg(fragment, i);
-    }
-
-  return fragment;
+  let fragment = document.createDocumentFragment();
+  return node_args(fragment, ...args);
 }
 
 export function text(content, modfn) {
@@ -56,20 +59,6 @@ export function classes(list = []) {
   return (node) => {
     node.className = list.filter(Boolean).join(" ");
   };
-}
-
-export function create_svg_ns(modifiers = []) {
-  let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  for (let mod of modifiers) mod(svg);
-
-  return svg;
-}
-
-export function create_path_ns(modifiers = []) {
-  let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  for (let mod of modifiers) mod(path);
-
-  return path;
 }
 
 export function attrs(attrs) {
@@ -130,8 +119,8 @@ export function condition(cond, truthy, falsey) {
 }
 
 export let fragment = (...args) => create_fragment(...args);
-export let svg = (...fns) => create_svg_ns(fns);
-export let path = (...fns) => create_path_ns(fns);
+export let svg = (...fns) => create_svg_ns(...args);
+export let path = (...fns) => create_path_ns(...args);
 export let span = (...args) => create_node("span", ...args);
 export let div = (...args) => create_node("div", ...args);
 export let ul = (...args) => create_node("ul", ...args);
