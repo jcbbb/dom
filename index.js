@@ -119,8 +119,8 @@ export function condition(cond, truthy, falsey) {
 }
 
 export let fragment = (...args) => create_fragment(...args);
-export let svg = (...fns) => create_svg_ns(...args);
-export let path = (...fns) => create_path_ns(...args);
+export let svg = (...args) => create_svg_ns(...args);
+export let path = (...args) => create_path_ns(...args);
 export let span = (...args) => create_node("span", ...args);
 export let div = (...args) => create_node("div", ...args);
 export let ul = (...args) => create_node("ul", ...args);
