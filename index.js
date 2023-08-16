@@ -1,4 +1,4 @@
-import { effect } from "state";
+import { effect, signal, is_signal } from "state";
 
 let is_bool = (val) => val === true || val === false;
 
@@ -43,7 +43,7 @@ export function create_fragment(...args) {
 
 export function text(content, modfn) {
   return (node) => {
-    if (typeof content === "function") {
+    if (is_signal(content)) {
       effect(() => {
         node.textContent = content(modfn);
       });
@@ -65,7 +65,7 @@ export function attrs(attrs) {
   return (node) => {
     for (let key in attrs) {
       let value = attrs[key];
-      if (typeof value === "function") {
+      if (is_signal(value)) {
         effect(() => {
           let val = value();
           if (is_bool(val)) node.toggleAttribute(key, val, val);
@@ -105,7 +105,7 @@ export function add_listeners(xs, listeners, opts) {
 
 export function value(content) {
   return (node) => {
-    if (typeof content === "function") {
+    if (is_signal(content)) {
       effect(() => {
         node.value = content();
       });

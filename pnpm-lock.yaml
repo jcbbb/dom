@@ -1,15 +1,14 @@
-lockfileVersion: 5.4
-
-specifiers:
-  state: github:jcbbb/state
+lockfileVersion: '6.0'
 
 dependencies:
-  state: github.com/jcbbb/state/9f0b334da2c63df9816a44aba3c496f4d0cc4752
+  state:
+    specifier: github:jcbbb/state
+    version: github.com/jcbbb/state/779caeb63ec7dea4e365f22b50e978892ae0e286
 
 packages:
 
-  github.com/jcbbb/state/9f0b334da2c63df9816a44aba3c496f4d0cc4752:
-    resolution: {tarball: https://codeload.github.com/jcbbb/state/tar.gz/9f0b334da2c63df9816a44aba3c496f4d0cc4752}
+  github.com/jcbbb/state/779caeb63ec7dea4e365f22b50e978892ae0e286:
+    resolution: {tarball: https://codeload.github.com/jcbbb/state/tar.gz/779caeb63ec7dea4e365f22b50e978892ae0e286}
     name: state
     version: 1.0.0
     dev: false
