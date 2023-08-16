@@ -85,12 +85,22 @@ export function html(str) {
   };
 }
 
-export function listeners(listeners) {
-  return (node) => {
-    for (let event in listeners) {
-      node.addEventListener(event, listeners[event]);
-    }
-  };
+export function listeners(listeners, opts) {
+  return (node) => add_listener(node, listeners, opts);
+}
+
+export function add_listener(node, listeners, opts = {}) {
+  for (let event in listeners) {
+    node.addEventListener(event, listeners[event], opts[event]);
+  }
+}
+
+export function add_listeners(xs, listeners, opts) {
+  if (xs instanceof NodeList) {
+    xs.forEach(node => add_listener(node, listeners, opts));
+  }
+
+  if (xs instanceof Node) add_listener(xs, listeners, opts);
 }
 
 export function value(content) {
