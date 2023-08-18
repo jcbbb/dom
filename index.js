@@ -55,9 +55,15 @@ export function text(content, modfn) {
   };
 }
 
-export function classes(list = []) {
+export function classes(list) {
   return (node) => {
-    node.className = list.filter(Boolean).join(" ");
+    if (typeof list === "function") {
+      effect(() => {
+        node.className = list().filter(Boolean).join(" ");
+      })
+    } else node.className = list.filter(Boolean).join(" ");
+
+    return node;
   };
 }
 
