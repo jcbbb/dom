@@ -147,5 +147,6 @@ export let h2 = (...args) => create_node("h2", ...args);
 export let a = (...args) => create_node("a", ...args);
 export let button = (...args) => create_node("button", ...args);
 export let input = (...args) => create_node("input", ...args);
+export let select = (...args) => create_node("select", ...args);
 export let label = (...args) => create_node("label", ...args);
 export let form = (...args) => create_node("form", ...args);
